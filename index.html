@@ -556,7 +556,7 @@
       <div class="pgrid">
         <div class="pfig"><div class="ph"><img src="assets/filial_serova_fasad.jpg" alt="Филиал Серова, фасад"></div><div class="pcap">Филиал «Серова» — фасад</div></div>
         <div class="pfig"><div class="ph"><img src="assets/filial_serova_interier.jpg" alt="Филиал Серова, интерьер"></div><div class="pcap">Филиал «Серова» — интерьер</div></div>
-        <div class="pfig"><div class="ph"><img src="assets/filial_chistopolskaya_interier.jpg" alt="Филиал Чистопольская, интерьер"></div><div class="pcap">Филиал «Чистопольская» — интерьер</div></div>
+        <div class="pfig"><div class="ph"><img src="assets/filial_chistopolskaya_interier.jpg" alt="Филиал Чистопольская, интерьер" style="object-position:78% 50%"></div><div class="pcap">Филиал «Чистопольская» — интерьер</div></div>
       </div>
     </div>
     <div class="s-foot"><span>Запуск типового филиала сети стоматологий · «ДентАРИЗ» · EMBA КФУ 2026</span><span class="pg">8 / 21</span></div>
@@ -951,7 +951,7 @@
   // ---------- CHARTS ----------
   var redC = '#C8102E', darkC = '#333333', greenC = '#2E7D32';
   var baseOpts = {
-    responsive:true, maintainAspectRatio:false,
+    responsive:false, maintainAspectRatio:false,
     plugins:{ legend:{ display:false }, tooltip:{ enabled:true } },
     scales:{
       x:{ grid:{ display:false }, ticks:{ color:'#6E6E6E', font:{ size:11 } } },
@@ -962,6 +962,16 @@
   function initCharts(){
     if(typeof Chart === 'undefined') return;
     Chart.defaults.font.family = "-apple-system,'Segoe UI',Roboto,Arial,sans-serif";
+
+    // фиксируем размер canvas по НЕскалированному контейнеру — иммунитет к transform:scale
+    function sizeCanvas(id){
+      var c=document.getElementById(id); if(!c) return;
+      var box=c.parentElement, cs=getComputedStyle(box);
+      var w=Math.max(50, box.clientWidth  - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight));
+      var h=Math.max(50, box.clientHeight - parseFloat(cs.paddingTop)  - parseFloat(cs.paddingBottom));
+      c.width=w; c.height=h; c.style.width=w+'px'; c.style.height=h+'px';
+    }
+    ['chart13','chart16','chart17','chart19'].forEach(sizeCanvas);
 
     // Slide 13 — разгон (line)
     new Chart(document.getElementById('chart13'), {
