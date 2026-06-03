@@ -99,7 +99,8 @@
   /* ---------- BODY ---------- */
   .s-body{
     flex:1 1 auto;
-    padding:24px 56px 0 44px;
+    /* bottom safe-zone so content never collides with footer */
+    padding:24px 56px 20px 44px;
     display:flex;
     flex-direction:column;
     min-height:0;
@@ -161,33 +162,40 @@
     background:var(--lgray);padding:4px 12px;border-radius:20px;font-weight:600;
   }
 
-  /* ---------- TITLE SLIDE ---------- */
+  /* ---------- TITLE SLIDE (ВШБ template) ---------- */
   .title-stage{
-    justify-content:center;align-items:center;text-align:center;padding:0 90px;
+    padding:0;display:block;position:relative;background:#cfd1d4;
   }
-  .title-stage .topbar{position:absolute;top:0;left:0;width:100%;height:12px;background:var(--red);}
-  .title-stage .botbar{position:absolute;bottom:0;left:0;width:100%;height:12px;background:var(--dark);}
-  .t-main{font-size:46px;font-weight:800;line-height:1.12;color:var(--dark);}
-  .t-sub{font-size:26px;color:var(--red);font-weight:700;margin-top:14px;}
-  .t-div{width:120px;height:4px;background:var(--red);margin:30px auto;}
-  .t-line{font-size:20px;color:var(--gray);margin:8px 0;}
-  .t-line.b{font-size:21px;color:var(--dark);font-weight:700;}
-  .t-foot{font-size:16px;color:var(--mgray);margin-top:26px;}
+  .title-stage .tbg{
+    position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;z-index:0;
+  }
+  .title-stage .tlogo{
+    position:absolute;top:45px;left:64px;width:330px;height:auto;z-index:2;
+  }
+  .t-titlewrap{position:absolute;top:218px;left:80px;z-index:2;max-width:1040px;}
+  .t-main{font-size:40px;font-weight:800;line-height:1.18;color:#fff;text-shadow:0 1px 8px rgba(0,0,0,.18);}
+  .t-sub{font-size:22px;font-weight:700;color:#fff;margin-top:14px;text-shadow:0 1px 6px rgba(0,0,0,.18);}
+  .t-redline{position:absolute;top:492px;left:85px;width:300px;height:3px;background:var(--red);z-index:2;}
+  .t-req{position:absolute;top:516px;left:80px;z-index:2;}
+  .t-req .l1{font-size:15px;font-weight:700;color:var(--dark);margin-bottom:8px;}
+  .t-req .l2{font-size:14px;font-weight:700;color:var(--dark);margin-bottom:6px;}
+  .t-req .l3{font-size:14px;color:var(--dark);margin-bottom:6px;}
+  .t-req .l4{font-size:12px;color:var(--gray);margin-top:6px;}
 
   /* ---------- HISTORY (slide 4) ---------- */
-  .hist-row{display:flex;gap:30px;align-items:flex-end;}
+  .hist-row{display:flex;gap:30px;align-items:flex-start;}
   .hist-fig{display:flex;flex-direction:column;align-items:center;}
-  .hist-fig.left{flex:0 0 320px;}
-  .hist-fig.right{flex:1 1 auto;}
+  .hist-fig.left{flex:1 1 0;}
+  .hist-fig.right{flex:1 1 0;}
   .hist-frame{
     width:100%;height:300px;background:var(--lgray);border-radius:8px;
     display:flex;align-items:center;justify-content:center;overflow:hidden;
   }
   .hist-frame.archive{border:6px solid #d8d8d8;filter:grayscale(1);box-shadow:inset 0 0 0 1px #bbb;}
   .hist-frame img{width:100%;height:100%;object-fit:contain;}
-  .hist-cap{font-size:15px;color:var(--gray);margin-top:10px;text-align:center;line-height:1.35;max-width:90%;}
+  .hist-cap{font-size:15px;color:var(--gray);margin-top:10px;text-align:center;line-height:1.35;max-width:96%;}
   .hist-text{
-    margin-top:26px;font-size:18px;line-height:1.5;color:var(--dark);
+    margin-top:24px;font-size:18px;line-height:1.5;color:var(--dark);
     border-left:6px solid var(--red);padding:6px 0 6px 20px;
   }
 
@@ -211,6 +219,14 @@
     margin-top:18px;background:var(--lgray);border-left:6px solid var(--red);
     padding:14px 20px;font-size:17px;font-weight:600;color:var(--dark);border-radius:0 8px 8px 0;
   }
+  /* mini-metrics block inside col (slide 6) */
+  .ctx-box{margin-top:18px;border-top:1px dashed var(--mgray);padding-top:16px;}
+  .ctx-box h4{font-size:15px;color:var(--dark);margin-bottom:12px;letter-spacing:.02em;}
+  .ctx-mini{display:flex;gap:12px;margin-bottom:12px;}
+  .ctx-mini .m{flex:1 1 0;background:#fff;border:1px solid var(--mgray);border-radius:10px;padding:10px 8px;text-align:center;}
+  .ctx-mini .m .v{font-size:19px;font-weight:800;color:var(--red);line-height:1.1;}
+  .ctx-mini .m .t{font-size:11px;color:var(--gray);margin-top:4px;line-height:1.2;}
+  .ctx-box .ctx-line{font-size:14px;color:var(--dark);line-height:1.4;}
 
   /* ---------- CONCEPT (slide 7) ---------- */
   .concept{display:flex;gap:30px;flex:1 1 auto;}
@@ -227,9 +243,11 @@
   .cc.darkb p{font-size:16px;line-height:1.5;margin-top:18px;color:#dfe1e4;}
 
   /* ---------- PHOTO GRID (slide 8) ---------- */
-  .pgrid{display:flex;gap:22px;flex:1 1 auto;}
+  /* Fixed photo-frame height so the row of 3 photos + captions + intro text
+     fits in the body above the footer (no bottom clipping / pager overlap). */
+  .pgrid{display:flex;gap:22px;flex:0 0 auto;}
   .pfig{flex:1 1 0;display:flex;flex-direction:column;}
-  .pfig .ph{flex:1 1 auto;border-radius:12px;overflow:hidden;background:var(--lgray);min-height:0;}
+  .pfig .ph{flex:0 0 auto;height:380px;border-radius:12px;overflow:hidden;background:var(--lgray);min-height:0;}
   .pfig .ph img{width:100%;height:100%;object-fit:cover;display:block;}
   .pfig .pcap{font-size:15px;color:var(--gray);margin-top:10px;text-align:center;}
 
@@ -286,10 +304,38 @@
   /* footnote */
   .foot-note{font-size:13px;color:var(--gray);margin-top:12px;line-height:1.4;}
 
-  /* ---------- FINMODEL IMG (slide 18) ---------- */
+  /* ---------- INVEST equipment table (slide 14) ---------- */
+  .inv-row{display:flex;gap:28px;flex:1 1 auto;min-height:0;}
+  .inv-left{flex:1 1 0;display:flex;flex-direction:column;}
+  .inv-right{flex:0 0 480px;background:#fff;border:1px solid var(--lgray);border-radius:12px;padding:16px 18px;display:flex;flex-direction:column;}
+  .inv-right h4{font-size:16px;color:var(--dark);margin-bottom:10px;}
+  .eq-tbl{width:100%;border-collapse:collapse;}
+  .eq-tbl td{font-size:15px;padding:9px 6px;border-bottom:1px solid var(--lgray);color:var(--dark);}
+  .eq-tbl td.p{text-align:right;font-weight:700;color:var(--red);white-space:nowrap;}
+  .eq-tbl tr:last-child td{border-bottom:none;}
+  .inv-formula{margin-top:auto;background:var(--lgray);border-left:6px solid var(--red);padding:14px 18px;font-size:16px;font-weight:600;color:var(--dark);border-radius:0 8px 8px 0;line-height:1.45;}
+
+  /* ---------- LEGAL cards (slide 15) ---------- */
+  .legal-row{display:flex;gap:22px;flex:1 1 auto;min-height:0;}
+  .legal-card{flex:1 1 0;border-radius:14px;border:2px solid var(--mgray);background:#fff;padding:22px 22px;display:flex;flex-direction:column;}
+  .legal-card.lic{border-color:var(--red);}
+  .legal-card.san{border-color:var(--mgray);}
+  .legal-card.tax{border-color:var(--green);}
+  .legal-card h3{font-size:18px;margin-bottom:14px;}
+  .legal-card.lic h3{color:var(--red);}
+  .legal-card.san h3{color:var(--gray);}
+  .legal-card.tax h3{color:var(--green);}
+  .legal-card ul{list-style:none;}
+  .legal-card li{position:relative;padding-left:22px;margin:11px 0;font-size:15px;line-height:1.38;color:var(--dark);}
+  .legal-card li::before{content:"";position:absolute;left:0;top:7px;width:8px;height:8px;border-radius:2px;background:var(--mgray);}
+  .legal-card.lic li::before{background:var(--red);}
+  .legal-card.tax li::before{background:var(--green);}
+
+  /* ---------- FINMODEL/GANTT IMG (slide 18,20) ---------- */
   .finwrap{flex:1 1 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:0;}
   .finwrap img{max-width:100%;max-height:80%;object-fit:contain;border:1px solid var(--lgray);border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.12);background:#fff;}
   .fincap{font-size:14px;color:var(--gray);margin-top:14px;text-align:center;max-width:1000px;line-height:1.4;}
+  .ganttwrap img{max-width:85%;}
 
   /* ---------- UK (slide 19) ---------- */
   .uk-row{display:flex;gap:28px;flex:1 1 auto;min-height:0;}
@@ -298,16 +344,17 @@
   .uk-left ul{list-style:none;}
   .uk-left li{position:relative;padding-left:22px;margin:7px 0;font-size:16px;color:var(--dark);line-height:1.3;}
   .uk-left li::before{content:"";position:absolute;left:0;top:7px;width:8px;height:8px;background:var(--red);border-radius:2px;}
-  .uk-note{margin-top:14px;background:var(--lgray);padding:12px 16px;border-radius:8px;font-size:15px;color:var(--dark);}
+  .uk-note{margin-top:14px;background:var(--lgray);padding:12px 16px;border-radius:8px;font-size:15px;color:var(--dark);line-height:1.45;}
+  .uk-note b{color:var(--red);}
 
-  /* ---------- RISK TABLE (slide 20) ---------- */
+  /* ---------- RISK TABLE (slide 21) ---------- */
   .risk-tbl{width:100%;border-collapse:collapse;flex:1 1 auto;}
   .risk-tbl th,.risk-tbl td{text-align:left;padding:14px 18px;font-size:17px;border-bottom:1px solid var(--lgray);vertical-align:top;}
   .risk-tbl th{background:var(--dark);color:#fff;font-size:15px;letter-spacing:.04em;}
   .risk-tbl td.r{font-weight:700;color:var(--red);width:38%;}
   .risk-tbl tr:nth-child(even) td{background:#fafbfc;}
 
-  /* ---------- RESULTS (slide 21) ---------- */
+  /* ---------- RESULTS (slide 22) ---------- */
   .thanks{margin-top:auto;background:var(--red);color:#fff;text-align:center;padding:24px;border-radius:12px;font-size:30px;font-weight:800;letter-spacing:.02em;}
 
   /* ---------- NAV ---------- */
@@ -331,18 +378,22 @@
 <body>
 <div id="deck">
 
-<!-- ============ SLIDE 1 — TITLE ============ -->
+<!-- ============ SLIDE 1 — TITLE (ВШБ template) ============ -->
 <section class="slide" data-i="1">
   <div class="stage title-stage">
-    <div class="topbar"></div>
-    <div class="t-main">Запуск типового филиала<br>сети стоматологий</div>
-    <div class="t-sub">на примере сети «ДентАРИЗ», г. Казань</div>
-    <div class="t-div"></div>
-    <div class="t-line">Итоговая аттестационная работа · Executive MBA</div>
-    <div class="t-line b">Слушатели: Айнетдинов Рамиль, Румянцев Даниил Сергеевич</div>
-    <div class="t-line">Научный руководитель: Киршин И.А., д.э.н., профессор</div>
-    <div class="t-foot">Институт управления, экономики и финансов · ВШБ · Казань, 2026</div>
-    <div class="botbar"></div>
+    <img class="tbg" src="assets/kfu_title_bg.jpg" alt="Фон КФУ ВШБ">
+    <img class="tlogo" src="assets/kfu_logo.png" alt="Казанский федеральный университет">
+    <div class="t-titlewrap">
+      <div class="t-main">Запуск типового филиала<br>сети стоматологий</div>
+      <div class="t-sub">на примере сети «ДентАРИЗ», г. Казань</div>
+    </div>
+    <div class="t-redline"></div>
+    <div class="t-req">
+      <div class="l1">Итоговая аттестационная работа · программа Executive MBA</div>
+      <div class="l2">Слушатели: Айнетдинов Рамиль Закярьявич, Румянцев Даниил Сергеевич</div>
+      <div class="l3">Научный руководитель: Киршин И.А., д.э.н., профессор</div>
+      <div class="l4">Институт управления, экономики и финансов · Высшая школа бизнеса · Казань, 2026</div>
+    </div>
   </div>
 </section>
 
@@ -355,22 +406,24 @@
     </div></div>
     <div class="s-rule"></div>
     <div class="s-body">
-      <div class="cards" style="margin-bottom:22px;">
+      <div class="cards" style="margin-bottom:20px;">
         <div class="card"><div class="strip"></div><div class="card-in">
-          <div class="big">≈ 872 млрд ₽</div><div class="lab">рынок стоматологии РФ, 2025 (+23% за год)</div></div></div>
+          <div class="big sm">≈ 872 млрд ₽</div><div class="lab">рынок стоматологии РФ, 2025 (+23% за год)</div></div></div>
         <div class="card gray"><div class="strip"></div><div class="card-in">
-          <div class="big" style="color:var(--dark)">≈ 1%</div><div class="lab">доля топ-3 сетей — рынок фрагментирован</div></div></div>
+          <div class="big sm" style="color:var(--dark)">≈ 1%</div><div class="lab">доля топ-3 сетей — рынок фрагментирован</div></div></div>
         <div class="card dark"><div class="strip"></div><div class="card-in">
-          <div class="big">13 кресел</div><div class="lab">в 2 филиалах — порог ручного управления</div></div></div>
+          <div class="big sm">13 кресел</div><div class="lab">в 2 филиалах — порог ручного управления</div></div></div>
       </div>
-      <ul class="bul">
+      <ul class="bul" style="margin-bottom:4px;">
         <li>Рынок растёт двузначными темпами, но остаётся сильно фрагментированным.</li>
         <li>Устойчивый тренд сетевизации частной стоматологии.</li>
-        <li>Сеть подошла к порогу, где ручное управление ростом исчерпывает себя.</li>
+        <li>Зарубежный опыт: управляемые стоматологические сети (DSO) — до 35% рынка США; в РФ консолидация далека от насыщения.</li>
+        <li>Стоматологическая сеть «ДентАРИЗ» подошла к порогу, где ручное управление ростом исчерпывает себя.</li>
+        <li>Рост «вручную», за счёт личного ресурса собственника, упирается в потолок масштаба и создаёт операционные риски.</li>
       </ul>
-      <div class="prob">Проблема — нужен воспроизводимый, рассчитанный проект открытия филиала, а не интуитивный запуск.</div>
+      <div class="prob" style="margin-bottom:6px;padding-right:230px;">Проблема — нужен воспроизводимый, рассчитанный проект открытия филиала, а не интуитивный запуск.</div>
     </div>
-    <div class="s-foot"><span>Запуск типового филиала сети стоматологий · «ДентАРИЗ» · EMBA КФУ 2026</span><span class="pg">2 / 21</span></div>
+    <div class="s-foot"><span>Запуск типового филиала сети стоматологий · «ДентАРИЗ» · EMBA КФУ 2026</span><span class="pg">2 / 22</span></div>
   </div>
 </section>
 
@@ -383,30 +436,30 @@
     </div></div>
     <div class="s-rule"></div>
     <div class="s-body">
-      <div class="prob" style="margin-top:0;margin-bottom:18px;border-radius:0 8px 8px 0;">
+      <div class="prob" style="margin-top:0;margin-bottom:16px;border-radius:0 8px 8px 0;">
         <b>Цель.</b> Разработать проект открытия и финансово обосновать тиражируемый типовой филиал на 5 кресел и механизм управляющей компании для масштабирования сети «ДентАРИЗ».
       </div>
       <div style="display:flex;gap:24px;margin-bottom:14px;">
         <div style="flex:1;font-size:17px;"><b style="color:var(--red)">Объект:</b> сеть «ДентАРИЗ» (Казань).</div>
-        <div style="flex:1;font-size:17px;"><b style="color:var(--red)">Предмет:</b> бизнес-модель и механизм масштабирования.</div>
+        <div style="flex:1;font-size:17px;"><b style="color:var(--red)">Предмет:</b> бизнес-модель и механизм масштабирования сети.</div>
       </div>
       <div style="font-size:16px;font-weight:700;color:var(--gray);margin-bottom:8px;">Задачи (8):</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px 30px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px 30px;">
         <ul class="bul" style="margin:0;">
-          <li>Анализ рынка и конкурентов</li>
-          <li>Концепция «ячейки» + УК</li>
-          <li>Диагностика бизнеса</li>
-          <li>Обоснование стратегии (SWOT)</li>
+          <li>Провести анализ рынка стоматологии и конкурентов</li>
+          <li>Разработать концепцию тиражируемой «ячейки» и УК</li>
+          <li>Провести диагностику бизнеса сети и выявить точки роста</li>
+          <li>Обосновать стратегию масштабирования (SWOT, выбор модели)</li>
         </ul>
         <ul class="bul" style="margin:0;">
-          <li>Проект филиала</li>
-          <li>Финмодель</li>
-          <li>Проект УК + консолидированный эффект</li>
-          <li>Управление рисками</li>
+          <li>Спроектировать типовой филиал (помещение, оснащение, штат, мощность)</li>
+          <li>Построить финансовую модель филиала (инвестиции, прибыль, окупаемость, NPV/IRR)</li>
+          <li>Разработать проект УК и оценить консолидированный эффект</li>
+          <li>Разработать систему управления рисками проекта</li>
         </ul>
       </div>
     </div>
-    <div class="s-foot"><span>Запуск типового филиала сети стоматологий · «ДентАРИЗ» · EMBA КФУ 2026</span><span class="pg">3 / 21</span></div>
+    <div class="s-foot"><span>Запуск типового филиала сети стоматологий · «ДентАРИЗ» · EMBA КФУ 2026</span><span class="pg">3 / 22</span></div>
   </div>
 </section>
 
@@ -431,7 +484,7 @@
       </div>
       <div class="hist-text">24 апреля 1994 года Айнетдинов Закярья Нариманович (1958 г.р.) открыл в Ульяновске первый частный стоматологический кабинет в городе. С него началась семейная династия, продолжением которой стала сеть «ДентАРИЗ» в Казани.</div>
     </div>
-    <div class="s-foot"><span>Запуск типового филиала сети стоматологий · «ДентАРИЗ» · EMBA КФУ 2026</span><span class="pg">4 / 21</span></div>
+    <div class="s-foot"><span>Запуск типового филиала сети стоматологий · «ДентАРИЗ» · EMBA КФУ 2026</span><span class="pg">4 / 22</span></div>
   </div>
 </section>
 
@@ -461,7 +514,7 @@
       </ul>
       <div class="src">Источник: Реальное время / KazanFirst по данным DentalData, ПроДокторов, 2026.</div>
     </div>
-    <div class="s-foot"><span>Запуск типового филиала сети стоматологий · «ДентАРИЗ» · EMBA КФУ 2026</span><span class="pg">5 / 21</span></div>
+    <div class="s-foot"><span>Запуск типового филиала сети стоматологий · «ДентАРИЗ» · EMBA КФУ 2026</span><span class="pg">5 / 22</span></div>
   </div>
 </section>
 
@@ -498,11 +551,20 @@
             <span class="chip">Городская стоматология</span>
             <span class="chip">Ортус</span>
           </div>
+          <div class="ctx-box">
+            <h4>Контекст рынка Казани</h4>
+            <div class="ctx-mini">
+              <div class="m"><div class="v">≈ 470</div><div class="t">клиник в городе</div></div>
+              <div class="m"><div class="v">≈ 9 млрд ₽</div><div class="t">объём рынка, 2025</div></div>
+              <div class="m"><div class="v">+24%</div><div class="t">рост за год</div></div>
+            </div>
+            <div class="ctx-line">Конкуренция высокая, спрос растёт — есть место для эффективного сетевого игрока.</div>
+          </div>
         </div>
       </div>
-      <div class="vivod">Полный премиум-спектр в одной сети. Рынок Казани зрелый и конкурентный — это подтверждает спрос; преимущество «ДентАРИЗ» — в тиражируемой модели и управляющей компании.</div>
+      <div class="vivod">Полный премиум-спектр в одной сети. Преимущество «ДентАРИЗ» — в тиражируемой модели и управляющей компании.</div>
     </div>
-    <div class="s-foot"><span>Запуск типового филиала сети стоматологий · «ДентАРИЗ» · EMBA КФУ 2026</span><span class="pg">6 / 21</span></div>
+    <div class="s-foot"><span>Запуск типового филиала сети стоматологий · «ДентАРИЗ» · EMBA КФУ 2026</span><span class="pg">6 / 22</span></div>
   </div>
 </section>
 
@@ -539,7 +601,7 @@
         </div>
       </div>
     </div>
-    <div class="s-foot"><span>Запуск типового филиала сети стоматологий · «ДентАРИЗ» · EMBA КФУ 2026</span><span class="pg">7 / 21</span></div>
+    <div class="s-foot"><span>Запуск типового филиала сети стоматологий · «ДентАРИЗ» · EMBA КФУ 2026</span><span class="pg">7 / 22</span></div>
   </div>
 </section>
 
@@ -559,7 +621,7 @@
         <div class="pfig"><div class="ph"><img src="assets/filial_chistopolskaya_interier.jpg" alt="Филиал Чистопольская, интерьер" style="object-position:78% 50%"></div><div class="pcap">Филиал «Чистопольская» — интерьер</div></div>
       </div>
     </div>
-    <div class="s-foot"><span>Запуск типового филиала сети стоматологий · «ДентАРИЗ» · EMBA КФУ 2026</span><span class="pg">8 / 21</span></div>
+    <div class="s-foot"><span>Запуск типового филиала сети стоматологий · «ДентАРИЗ» · EMBA КФУ 2026</span><span class="pg">8 / 22</span></div>
   </div>
 </section>
 
@@ -580,9 +642,9 @@
         <div class="eqfig"><div class="eh"><img src="assets/obor_tomograf_planmeca.jpg" alt="Томограф Planmeca"></div>
           <div class="ecap">КТ-диагностика (Planmeca)</div></div>
       </div>
-      <div class="eqnote">Также: <b>наркозный аппарат</b>, <b>интраоральные сканеры</b>, премиум-оснащение — стандарт, тиражируемый в типовой филиал.</div>
+      <div class="eqnote" style="margin-bottom:4px;padding:0 230px;">Также: <b>наркозный аппарат</b>, <b>интраоральные сканеры</b> — стандарт оснащения, тиражируемый в типовой филиал.</div>
     </div>
-    <div class="s-foot"><span>Запуск типового филиала сети стоматологий · «ДентАРИЗ» · EMBA КФУ 2026</span><span class="pg">9 / 21</span></div>
+    <div class="s-foot"><span>Запуск типового филиала сети стоматологий · «ДентАРИЗ» · EMBA КФУ 2026</span><span class="pg">9 / 22</span></div>
   </div>
 </section>
 
@@ -600,7 +662,7 @@
         <div class="vidcap">Собственная зуботехническая лаборатория: фрезеровка циркониевых коронок на 5-осевом ЧПУ-станке (RIVOX Mill D520).</div>
       </div>
     </div>
-    <div class="s-foot"><span>Запуск типового филиала сети стоматологий · «ДентАРИЗ» · EMBA КФУ 2026</span><span class="pg">10 / 21</span></div>
+    <div class="s-foot"><span>Запуск типового филиала сети стоматологий · «ДентАРИЗ» · EMBA КФУ 2026</span><span class="pg">10 / 22</span></div>
   </div>
 </section>
 
@@ -618,7 +680,7 @@
         <div class="otx">Команда уже открыла и быстро вывела на загрузку второй филиал. Отлаженный механизм «группы запуска» <b>из опытных специалистов</b> → риск открытия следующего типового филиала снижен практикой.</div>
       </div>
     </div>
-    <div class="s-foot"><span>Запуск типового филиала сети стоматологий · «ДентАРИЗ» · EMBA КФУ 2026</span><span class="pg">11 / 21</span></div>
+    <div class="s-foot"><span>Запуск типового филиала сети стоматологий · «ДентАРИЗ» · EMBA КФУ 2026</span><span class="pg">11 / 22</span></div>
   </div>
 </section>
 
@@ -653,7 +715,7 @@
       </div>
       <div class="swot-v">Вывод: типовой филиал тиражирует сильные стороны, УК устраняет слабые.</div>
     </div>
-    <div class="s-foot"><span>Запуск типового филиала сети стоматологий · «ДентАРИЗ» · EMBA КФУ 2026</span><span class="pg">12 / 21</span></div>
+    <div class="s-foot"><span>Запуск типового филиала сети стоматологий · «ДентАРИЗ» · EMBA КФУ 2026</span><span class="pg">12 / 22</span></div>
   </div>
 </section>
 
@@ -666,25 +728,25 @@
     </div></div>
     <div class="s-rule"></div>
     <div class="s-body">
-      <div class="chart-row">
-        <div style="flex:1 1 0;display:flex;flex-direction:column;">
+      <div class="chart-row" style="max-height:392px;">
+        <div style="flex:1 1 0;display:flex;flex-direction:column;min-height:0;">
           <ul class="bul" style="margin-top:0;">
             <li>Помещение 195 м²: 2 терапии, ортопедия, хирургия, ортодонтия/пародонтология + рентген, ЦСО, офис</li>
             <li>Производственный фонд 1430 ч/мес, загрузка 85%</li>
             <li>Выход на ≈196 млн ₽/год (проект)</li>
           </ul>
           <div class="metric-strip" style="margin-top:auto;">
-            <div class="card"><div class="strip"></div><div class="card-in"><div class="big">196 млн ₽</div><div class="lab">выручка/год на мощности (проект)</div></div></div>
-            <div class="card dark"><div class="strip"></div><div class="card-in"><div class="big" style="color:var(--dark)">~22 мес</div><div class="lab">выход на полную мощность</div></div></div>
+            <div class="card"><div class="strip"></div><div class="card-in" style="padding:14px 16px;"><div class="big">196 млн ₽</div><div class="lab">выручка/год на мощности (проект)</div></div></div>
+            <div class="card dark"><div class="strip"></div><div class="card-in" style="padding:14px 16px;"><div class="big" style="color:var(--dark)">~22 мес</div><div class="lab">выход на полную мощность</div></div></div>
           </div>
         </div>
         <div class="chart-box" style="flex:1 1 0;">
           <canvas id="chart13"></canvas>
         </div>
       </div>
-      <span class="proj" style="margin-top:12px;">Проектные допущения</span>
+      <span class="proj" style="margin-top:12px;flex:0 0 auto;">Проектные допущения</span>
     </div>
-    <div class="s-foot"><span>Запуск типового филиала сети стоматологий · «ДентАРИЗ» · EMBA КФУ 2026</span><span class="pg">13 / 21</span></div>
+    <div class="s-foot"><span>Запуск типового филиала сети стоматологий · «ДентАРИЗ» · EMBA КФУ 2026</span><span class="pg">13 / 22</span></div>
   </div>
 </section>
 
@@ -697,18 +759,33 @@
     </div></div>
     <div class="s-rule"></div>
     <div class="s-body">
-      <div class="cards" style="margin-bottom:22px;">
-        <div class="card"><div class="strip"></div><div class="card-in"><div class="big sm">16,6 млн ₽</div><div class="lab">ремонт (195 м² × 85 тыс)</div></div></div>
+      <div class="cards" style="margin-bottom:20px;">
+        <div class="card"><div class="strip"></div><div class="card-in"><div class="big sm">16,6 млн ₽</div><div class="lab">ремонт (195 м² × 85 тыс ₽/м²)</div></div></div>
         <div class="card"><div class="strip"></div><div class="card-in"><div class="big sm">23,8 млн ₽</div><div class="lab">оборудование (92 ед.)</div></div></div>
         <div class="card dark"><div class="strip"></div><div class="card-in"><div class="big sm" style="color:var(--dark)">63,5 млн ₽</div><div class="lab">совокупные вложения собственника</div></div></div>
       </div>
-      <ul class="bul">
-        <li>Ключевое оснащение проекта: 5× установка, КТ-томограф, 3× микроскоп, интраоральный сканер, аксиограф.</li>
-        <li>CAPEX ≈ 40,4 млн ₽.</li>
-        <li>Вложения = CAPEX + оборотный капитал + покрытие планового убытка разгона.</li>
-      </ul>
+      <div class="inv-row">
+        <div class="inv-left">
+          <ul class="bul" style="margin-top:0;">
+            <li>CAPEX ≈ 40,4 млн ₽.</li>
+            <li>Ключевое оснащение: 5 установок, КТ-томограф, 3 микроскопа, интраоральный сканер, аксиограф.</li>
+          </ul>
+          <div class="inv-formula">Вложения = CAPEX + оборотный капитал + покрытие планового отрицательного денежного потока в первый год работы.</div>
+        </div>
+        <div class="inv-right">
+          <h4>Ключевое оборудование</h4>
+          <table class="eq-tbl">
+            <tr><td>5× установка Kavo E30</td><td class="p">5,5 млн ₽</td></tr>
+            <tr><td>Томограф Rayscan</td><td class="p">7,0 млн ₽</td></tr>
+            <tr><td>3× микроскоп Altion</td><td class="p">4,5 млн ₽</td></tr>
+            <tr><td>Интраоральный сканер Medit</td><td class="p">0,85 млн ₽</td></tr>
+            <tr><td>Аксиограф</td><td class="p">1,3 млн ₽</td></tr>
+            <tr><td>Мебель</td><td class="p">4,0 млн ₽</td></tr>
+          </table>
+        </div>
+      </div>
     </div>
-    <div class="s-foot"><span>Запуск типового филиала сети стоматологий · «ДентАРИЗ» · EMBA КФУ 2026</span><span class="pg">14 / 21</span></div>
+    <div class="s-foot"><span>Запуск типового филиала сети стоматологий · «ДентАРИЗ» · EMBA КФУ 2026</span><span class="pg">14 / 22</span></div>
   </div>
 </section>
 
@@ -721,23 +798,35 @@
     </div></div>
     <div class="s-rule"></div>
     <div class="s-body">
-      <div style="display:flex;gap:22px;flex:1 1 auto;">
-        <div class="lcol redb" style="border-color:var(--mgray);">
-          <h3 style="color:var(--red)">Лицензирование</h3>
-          <ul class="bul" style="margin-top:0;"><li style="font-size:16px;">Медицинская деятельность лицензируется (Положение о лицензировании меддеятельности, пост. Правительства РФ № 852 от 01.06.2021)</li><li style="font-size:16px;">Требования к помещению, оборудованию, квалификации</li></ul>
+      <div class="legal-row">
+        <div class="legal-card lic">
+          <h3>Лицензирование</h3>
+          <ul>
+            <li>Медицинская деятельность лицензируется (Положение, пост. Правительства РФ № 852 от 01.06.2021)</li>
+            <li>Требования к помещению, оборудованию, квалификации персонала</li>
+            <li>Лицензия Росздравнадзора — после готовности помещения и оборудования</li>
+          </ul>
         </div>
-        <div class="lcol grayb" style="background:#fff;border-color:var(--mgray);">
-          <h3 style="color:var(--gray)">Санитарные нормы</h3>
-          <ul class="bul" style="margin-top:0;"><li style="font-size:16px;">СанПиН 2.1.3678-20 — требования к организации медорганизаций</li></ul>
+        <div class="legal-card san">
+          <h3>Санитарные нормы</h3>
+          <ul>
+            <li>СанПиН 2.1.3678-20 — требования к медорганизациям</li>
+            <li>Нормативы площадей кабинетов, вентиляция, освещение</li>
+            <li>Стерилизация и ЦСО; обращение с медотходами (СанПиН 2.1.7.2790-10)</li>
+          </ul>
         </div>
-        <div class="lcol redb" style="border-color:var(--green);">
-          <h3 style="color:var(--green)">Налоговые льготы</h3>
-          <ul class="bul" style="margin-top:0;"><li style="font-size:16px;">Освобождение от НДС (ст. 149 п.2 НК РФ)</li><li style="font-size:16px;">Ставка 0% налога на прибыль для медорганизаций (ст. 284.1 НК РФ)</li></ul>
+        <div class="legal-card tax">
+          <h3>Налоговые льготы</h3>
+          <ul>
+            <li>Освобождение от НДС (ст. 149 п.2 НК РФ)</li>
+            <li>Ставка 0% налога на прибыль для медорганизаций (ст. 284.1 НК РФ)</li>
+            <li>Условия 0%: доля медуслуг ≥ 90% доходов, ≥ 50% сертифицированного персонала</li>
+          </ul>
         </div>
       </div>
-      <div class="vivod" style="margin-top:18px;">Правовое поле благоприятно: при официальном оформлении проект использует медицинские налоговые льготы — драйвер чистой рентабельности.</div>
+      <div class="vivod" style="margin-top:18px;">Правовое поле благоприятно: при официальном оформлении проект использует медицинские налоговые льготы — драйвер рентабельности по чистой прибыли.</div>
     </div>
-    <div class="s-foot"><span>Запуск типового филиала сети стоматологий · «ДентАРИЗ» · EMBA КФУ 2026</span><span class="pg">15 / 21</span></div>
+    <div class="s-foot"><span>Запуск типового филиала сети стоматологий · «ДентАРИЗ» · EMBA КФУ 2026</span><span class="pg">15 / 22</span></div>
   </div>
 </section>
 
@@ -750,17 +839,17 @@
     </div></div>
     <div class="s-rule"></div>
     <div class="s-body">
-      <div class="chart-row">
+      <div class="chart-row" style="max-height:392px;">
         <div class="chart-box"><canvas id="chart16"></canvas></div>
         <div class="chart-side">
-          <div class="card"><div class="strip"></div><div class="card-in"><div class="big sm">45,4%</div><div class="lab">маржинальная рентабельность</div></div></div>
-          <div class="card"><div class="strip"></div><div class="card-in"><div class="big sm">22,1%</div><div class="lab">рентабельность по EBITDA</div></div></div>
-          <div class="card green"><div class="strip"></div><div class="card-in"><div class="big sm">0% / без НДС</div><div class="lab">налог на прибыль (ст. 284.1 НК) и освобождение от НДС (ст. 149)</div></div></div>
+          <div class="card"><div class="strip"></div><div class="card-in" style="padding:13px 20px;"><div class="big sm">45,4%</div><div class="lab" style="margin-top:5px;">маржинальная рентабельность</div></div></div>
+          <div class="card"><div class="strip"></div><div class="card-in" style="padding:13px 20px;"><div class="big sm">22,1%</div><div class="lab" style="margin-top:5px;">рентабельность по EBITDA</div></div></div>
+          <div class="card green"><div class="strip"></div><div class="card-in" style="padding:13px 20px;"><div class="big sm">0% / без НДС</div><div class="lab" style="margin-top:5px;">налог на прибыль (ст. 284.1 НК) и освобождение от НДС (ст. 149)</div></div></div>
         </div>
       </div>
-      <span class="proj" style="margin-top:10px;">Проектные допущения</span>
+      <span class="proj" style="margin-top:12px;flex:0 0 auto;">Проектные допущения</span>
     </div>
-    <div class="s-foot"><span>Запуск типового филиала сети стоматологий · «ДентАРИЗ» · EMBA КФУ 2026</span><span class="pg">16 / 21</span></div>
+    <div class="s-foot"><span>Запуск типового филиала сети стоматологий · «ДентАРИЗ» · EMBA КФУ 2026</span><span class="pg">16 / 22</span></div>
   </div>
 </section>
 
@@ -783,7 +872,7 @@
       </div>
       <div class="foot-note">Переменная ставка дисконтирования 14,6% → 6%: риск-премия снижается по мере выхода проекта на проектную мощность. Метод — раздел «Учёт изменений нормы дисконта во времени» Методических рекомендаций по оценке эффективности инвестпроектов (1999, № ВК 477).</div>
     </div>
-    <div class="s-foot"><span>Запуск типового филиала сети стоматологий · «ДентАРИЗ» · EMBA КФУ 2026</span><span class="pg">17 / 21</span></div>
+    <div class="s-foot"><span>Запуск типового филиала сети стоматологий · «ДентАРИЗ» · EMBA КФУ 2026</span><span class="pg">17 / 22</span></div>
   </div>
 </section>
 
@@ -798,10 +887,10 @@
     <div class="s-body">
       <div class="finwrap">
         <img src="assets/finmodel_god123.png" alt="Финмодель — P&L год 1/2/3">
-        <div class="fincap">Год 1 — разгон (плановый убыток), год 2 — выход в прибыль, год 3 — плановые показатели. Проектные допущения.</div>
+        <div class="fincap">Год 1 — разгон, год 2 — выход в прибыль, год 3 — плановые показатели. Проектные допущения.</div>
       </div>
     </div>
-    <div class="s-foot"><span>Запуск типового филиала сети стоматологий · «ДентАРИЗ» · EMBA КФУ 2026</span><span class="pg">18 / 21</span></div>
+    <div class="s-foot"><span>Запуск типового филиала сети стоматологий · «ДентАРИЗ» · EMBA КФУ 2026</span><span class="pg">18 / 22</span></div>
   </div>
 </section>
 
@@ -826,20 +915,38 @@
             <li>HR-директор и рекрутер</li>
             <li>Отдел контроля качества</li>
           </ul>
-          <div class="uk-note">Тариф на филиал ≈ 748 тыс ₽/мес · точка безубыточности УК ≈ 4 филиала.<br>Эффект масштаба: устранение дублирования функций, единый учёт и контроль качества.</div>
+          <div class="uk-note"><b>OPEX управляющей компании на 1 филиал ≈ 748 тыс ₽/мес.</b><br>Эффект масштаба: устранение дублирования функций, единый учёт и контроль качества.</div>
         </div>
         <div style="flex:0 0 560px;display:flex;flex-direction:column;min-height:0;">
-          <div class="chart-box" style="flex:1 1 auto;min-height:0;"><canvas id="chart19"></canvas></div>
-          <div class="card" style="margin-top:14px;"><div class="strip"></div><div class="card-in"><div class="big sm">≈ 588 млн ₽</div><div class="lab">выручка сети из 3 филиалов (проект)</div></div></div>
+          <div class="chart-box" style="flex:1 1 auto;min-height:0;max-height:330px;"><canvas id="chart19"></canvas></div>
+          <div class="card" style="margin-top:14px;flex:0 0 auto;"><div class="strip"></div><div class="card-in" style="padding:14px 22px;"><div class="big sm">≈ 588 млн ₽</div><div class="lab">выручка сети из 3 филиалов (проект)</div></div></div>
         </div>
       </div>
     </div>
-    <div class="s-foot"><span>Запуск типового филиала сети стоматологий · «ДентАРИЗ» · EMBA КФУ 2026</span><span class="pg">19 / 21</span></div>
+    <div class="s-foot"><span>Запуск типового филиала сети стоматологий · «ДентАРИЗ» · EMBA КФУ 2026</span><span class="pg">19 / 22</span></div>
   </div>
 </section>
 
-<!-- ============ SLIDE 20 — Риск-менеджмент ============ -->
+<!-- ============ SLIDE 20 — График реализации (Гант) ============ -->
 <section class="slide" data-i="20">
+  <div class="stage">
+    <div class="s-head"><div class="s-bar"></div><div class="s-head-txt">
+      <div class="s-kicker">Дорожная карта</div>
+      <div class="s-title">График реализации проекта</div>
+    </div></div>
+    <div class="s-rule"></div>
+    <div class="s-body">
+      <div class="finwrap ganttwrap">
+        <img src="assets/gantt.png" alt="Диаграмма Ганта — график реализации проекта">
+        <div class="fincap">От анализа рынка до открытия — около 11 месяцев. Подбор персонала и лицензирование идут параллельно с завершением ремонта.</div>
+      </div>
+    </div>
+    <div class="s-foot"><span>Запуск типового филиала сети стоматологий · «ДентАРИЗ» · EMBA КФУ 2026</span><span class="pg">20 / 22</span></div>
+  </div>
+</section>
+
+<!-- ============ SLIDE 21 — Риск-менеджмент ============ -->
+<section class="slide" data-i="21">
   <div class="stage">
     <div class="s-head"><div class="s-bar"></div><div class="s-head-txt">
       <div class="s-kicker">Управление рисками</div>
@@ -854,16 +961,16 @@
           <tr><td class="r">Переоценка спроса</td><td>Анализ ёмкости локации, поэтапный разгон</td></tr>
           <tr><td class="r">Кассовый разрыв</td><td>Резерв оборотных средств</td></tr>
           <tr><td class="r">Потеря управляемости</td><td>Единый учёт и KPI</td></tr>
-          <tr><td class="r">Качество в новом филиале</td><td>Стандарты, NPS, рейтинги ≥ 4,7</td></tr>
+          <tr><td class="r">Качество в новом филиале</td><td>Стандарты, NPS ≥ 4,8</td></tr>
         </tbody>
       </table>
     </div>
-    <div class="s-foot"><span>Запуск типового филиала сети стоматологий · «ДентАРИЗ» · EMBA КФУ 2026</span><span class="pg">20 / 21</span></div>
+    <div class="s-foot"><span>Запуск типового филиала сети стоматологий · «ДентАРИЗ» · EMBA КФУ 2026</span><span class="pg">21 / 22</span></div>
   </div>
 </section>
 
-<!-- ============ SLIDE 21 — Результаты + Спасибо ============ -->
-<section class="slide" data-i="21">
+<!-- ============ SLIDE 22 — Результаты + Спасибо ============ -->
+<section class="slide" data-i="22">
   <div class="stage">
     <div class="s-head"><div class="s-bar"></div><div class="s-head-txt">
       <div class="s-kicker">Итоги</div>
@@ -873,13 +980,13 @@
     <div class="s-body">
       <ul class="bul">
         <li>Готовый проект открытия тиражируемого филиала.</li>
-        <li>Инвестиции 63,5 млн ₽, выручка 196 млн ₽/год, чистая рентабельность ≈ 21%, окупаемость ≈ 22 мес (проект).</li>
+        <li>Инвестиции 63,5 млн ₽, выручка 196 млн ₽/год, рентабельность по чистой прибыли ≈ 21%, окупаемость ≈ 22 мес (проект).</li>
         <li>Проект УК для управляемости и эффекта масштаба.</li>
         <li>Тиражируемый шаблон для дальнейшего роста сети.</li>
       </ul>
       <div class="thanks">Спасибо за внимание!</div>
     </div>
-    <div class="s-foot"><span>Запуск типового филиала сети стоматологий · «ДентАРИЗ» · EMBA КФУ 2026</span><span class="pg">21 / 21</span></div>
+    <div class="s-foot"><span>Запуск типового филиала сети стоматологий · «ДентАРИЗ» · EMBA КФУ 2026</span><span class="pg">22 / 22</span></div>
   </div>
 </section>
 
@@ -887,7 +994,7 @@
 
 <div id="nav">
   <button id="prev" title="Назад (←/↑)">‹</button>
-  <span id="counter">1 / 21</span>
+  <span id="counter">1 / 22</span>
   <button id="next" title="Вперёд (→/↓)">›</button>
 </div>
 <div id="hint">← → / ↑ ↓ — навигация · F — полный экран</div>
