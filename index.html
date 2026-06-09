@@ -321,19 +321,19 @@
   .legal-card.lic{border-color:var(--red);}
   .legal-card.san{border-color:var(--mgray);}
   .legal-card.tax{border-color:var(--green);}
-  .legal-card h3{font-size:18px;margin-bottom:14px;}
+  .legal-card h3{font-size:22px;margin-bottom:14px;}
   .legal-card.lic h3{color:var(--red);}
   .legal-card.san h3{color:var(--gray);}
   .legal-card.tax h3{color:var(--green);}
   .legal-card ul{list-style:none;}
-  .legal-card li{position:relative;padding-left:22px;margin:11px 0;font-size:15px;line-height:1.38;color:var(--dark);}
+  .legal-card li{position:relative;padding-left:22px;margin:12px 0;font-size:17px;line-height:1.42;color:var(--dark);}
   .legal-card li::before{content:"";position:absolute;left:0;top:7px;width:8px;height:8px;border-radius:2px;background:var(--mgray);}
   .legal-card.lic li::before{background:var(--red);}
   .legal-card.tax li::before{background:var(--green);}
 
   /* ---------- FINMODEL/GANTT IMG (slide 18,20) ---------- */
   .finwrap{flex:1 1 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:0;}
-  .finwrap img{max-width:100%;max-height:80%;object-fit:contain;border:1px solid var(--lgray);border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.12);background:#fff;}
+  .finwrap img{max-width:100%;max-height:96%;object-fit:contain;border:1px solid var(--lgray);border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.12);background:#fff;}
   .fincap{font-size:14px;color:var(--gray);margin-top:14px;text-align:center;max-width:1000px;line-height:1.4;}
   .ganttwrap img{max-width:85%;}
 
@@ -865,10 +865,10 @@
       <div class="chart-box" style="flex:1 1 auto;min-height:0;"><canvas id="chart17"></canvas></div>
       <div class="metric-strip" style="margin-top:16px;">
         <div class="card green"><div class="strip"></div><div class="card-in"><div class="big">NPV +54,57</div><div class="lab">млн ₽</div></div></div>
-        <div class="card"><div class="strip"></div><div class="card-in"><div class="big">IRR 33,05%</div><div class="lab">внутр. норма</div></div></div>
-        <div class="card dark"><div class="strip"></div><div class="card-in"><div class="big" style="color:var(--dark)">PBP 2 г 8 мес</div><div class="lab">срок окуп.</div></div></div>
-        <div class="card dark"><div class="strip"></div><div class="card-in"><div class="big" style="color:var(--dark)">D-PBP 3 г 4 мес</div><div class="lab">дисконт. окуп.</div></div></div>
-        <div class="card"><div class="strip"></div><div class="card-in"><div class="big">PI 3,19</div><div class="lab">индекс прибыльн.</div></div></div>
+        <div class="card"><div class="strip"></div><div class="card-in"><div class="big">33,05%</div><div class="lab">внутренняя норма рентабельности</div></div></div>
+        <div class="card dark"><div class="strip"></div><div class="card-in"><div class="big" style="color:var(--dark)">2 г 8 мес</div><div class="lab">срок окупаемости</div></div></div>
+        <div class="card dark"><div class="strip"></div><div class="card-in"><div class="big" style="color:var(--dark)">3 г 4 мес</div><div class="lab">дисконтированный срок окупаемости</div></div></div>
+        <div class="card"><div class="strip"></div><div class="card-in"><div class="big">3,19</div><div class="lab">индекс прибыльности</div></div></div>
       </div>
       <div class="foot-note">Переменная ставка дисконтирования 14,6% → 6%: риск-премия снижается по мере выхода проекта на проектную мощность. Метод — раздел «Учёт изменений нормы дисконта во времени» Методических рекомендаций по оценке эффективности инвестпроектов (1999, № ВК 477).</div>
     </div>
